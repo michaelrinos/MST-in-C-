@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vecotr>
+#include <map>
 #include <string>
 
 using namespace std;
@@ -19,7 +20,7 @@ namespace MST {
             size_t nCapacity;
             string name;
             Node * predecessor;
-            Table * weights;
+            map<string, int> weights;
             vector<Node> neighbors;
 
 
@@ -29,7 +30,7 @@ namespace MST {
             Node(string name);
 
             /// Copy Constructor
-            Node(Node other);
+            Node(const Node other);
 
             /// Destructor
             ~Node();
@@ -37,7 +38,7 @@ namespace MST {
         public:  /// Mutation
 
             /// Set a nodes neightbor
-            void putNeighbor(Node a, Node b, int weight);
+            void putNeighbor(Node a, const Node b, int weight);
 
             /// Set a nodes parent
             void setPred(Node who, Node pred);
