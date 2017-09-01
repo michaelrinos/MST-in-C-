@@ -1,6 +1,10 @@
+#include <iostream>
 #include "Edge.h"
 
+using namespace std;
+
 namespace MST {
+
 Edge::Edge(int weight, int row, int col):
     weight{weight},
     row{row},
