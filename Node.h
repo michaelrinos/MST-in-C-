@@ -30,7 +30,7 @@ namespace MST {
             Node(string name);
 
             /// Copy Constructor
-            Node(const Node other);
+            Node(const Node & other);
 
             /// Destructor
             ~Node();
@@ -38,10 +38,10 @@ namespace MST {
         public:  /// Mutation
 
             /// Set a nodes neightbor
-            void putNeighbor(Node a, const Node b, int weight);
+            void putNeighbor(Node a, const Node & b, int weight);
 
             /// Set a nodes parent
-            void setPred(Node who, Node pred);
+            void setPred(Node & who, Node & pred);
         
         public: /// Output
 

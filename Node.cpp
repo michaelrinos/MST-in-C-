@@ -40,7 +40,16 @@ Node::~Node(){
 }
 
 Node::putNeighbor(Node & a, const Node & b, int weight){
+    a.push_back(b);
+    a.weights.insert(b.name, weight);
+}
 
+Node::setPred(Node & who, Node & pred){
+    a.predecessor=&pred;
+}
+
+ostream & operator<<(ostream &os, const Node & n){
+    return os << n.name;
 }
     
 }
