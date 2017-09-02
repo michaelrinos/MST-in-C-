@@ -20,6 +20,7 @@ namespace MST {
             string DFSInfo( Maze &maze);
             string listInfo( Maze &maze);
             string matrixInfo( Maze &maze);
+            int canReachDFS(string startNode);
 
         public: /// Creation
             Maze(size_t size);
