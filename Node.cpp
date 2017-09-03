@@ -57,5 +57,9 @@ ostream & operator<<(ostream &os, const Node & n){
     }
     return os<<endl;
 }
+
+bool Node::operator==( const Node & other){
+    return stoi(this->name) == stoi(other.name);
+}
     
 }

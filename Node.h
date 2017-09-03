@@ -42,8 +42,8 @@ class Node{
         /// Set a nodes parent
         void setPred(Node & pred);
     
-    public: /// Output
-
+    public: /// operators
+        bool operator==(const Node & other);
         /// Prints node and neighbors with weights to get to each neighbor
         friend ostream &operator<<(ostream &os, const Node &n);
 

@@ -15,7 +15,42 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 vector< Edge > prim (vector< vector< Node> a){
+    vector< Node > parent;
+    vector< int > key;
+    vector< Edge > MST;
+    priority_queue< MinHeapNode > minHeap;
+    Node n("-1");
+    for (int i = 0; i < numbers; i++){
+        parent[i] = n;
+        key[i] = INT_MAX;
+        MinHeapNode m(key[i], a[i]);
+        // Add to MinHeap
+    }
+    key[0] = 0;
+    MinHeapNode m(0, a[0]);
+    // Add to MinHeap
     
+    while (minHeap.empty() == false){
+        MinHeapNode u = pq.pop();
+        for ( auto n : u.getNode.neighbors){
+            int name = stoi(n.name);
+            int weight = n.weights.find(u.getNode.name);
+            MinHeapNode neighbor(n, key[name]);
+            if ( minHeap.contains(neighbor) && weight < key[name]){
+                key[name] = weight;
+                parent[name] = u.getNode();
+                MinHeapNode t(weight, n);
+                //drease the key of the MinHeapNode with the same node
+            }
+        }
+    }
+    for (int i = 0; i < numbers; i++){
+        string str = stoi(i);
+        Edge e( parent[i].weights.find(str), stor(parent[i].name), i);
+        MST.push_back(e);
+    }
+    return MST;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,10 +64,26 @@ vector< Edge > prim (vector< vector< Node> a){
 ///////////////////////////////////////////////////////////////////////////////
 
 Node * find(Node p){
-
+    Node * pp = p.predecessor;
+    if ( p != &pp ){
+        Node * daPred = find(pp);
+        p.setPredecessor(daPred);
+    }
+    return p.predecessor;
 }
 
 void Union(Node & u, Node & v){
+    Node * i = find(u);
+    Node * j = find(v);
+
+    if (i->rank > j->rank){
+        j.setPredecessor(i);
+    } else {
+        i.setPredecessor(j);
+        if (i->rank == j->rank){
+            j->rank = j->rank+1;
+        }
+    }
 
 }
 
@@ -52,4 +103,15 @@ vector< Edge> kruskal( vector< Edge >){
 //                                  |___/
 ///////////////////////////////////////////////////////////////////////////////
 
+void quickSort(vector< Edge> arr, int low, int high){
 
+}
+
+void countSort(vector< Edge> a, int k){
+
+}
+
+void insertionSord(vector< Edge> arr, int length){
+
+
+}
