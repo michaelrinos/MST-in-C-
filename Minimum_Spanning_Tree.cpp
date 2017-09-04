@@ -84,10 +84,45 @@ void Union(Node & u, Node & v){
             j->rank = j->rank+1;
         }
     }
-
 }
 
 vector< Edge> kruskal( vector< Edge >){
+    vector< Node > b;
+    for (int i = 0; i < numbers; i ++){
+        Node n(to_string(i));
+        b[i] = n;
+    }
+    
+    int includedCount = 0;
+    int edge = 0;
+
+    vector< Edge > MST;
+    int size = 0;
+
+    while ( includedCount < numbers-1){
+        Node root1 = b[ a[edges].row ];
+        Node root2 = b[ a[edges].col ];
+
+        if (!root1.predSet){
+            root1.setPred(root1);
+        }
+        
+        if (!root2.predSet){
+            root2.setPred(root2);
+        }
+
+        root1 = find(root1);
+        root2 = find(root2);
+       
+        if (root1 != root2){
+            MST[size++] = a[edges];
+            includeCount++;
+            Union(root1,root2);
+        }
+        edges++;
+
+    }
+    return MST;
 
 }
 
