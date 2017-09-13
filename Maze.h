@@ -4,6 +4,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+
+#include "Node.h"
+#include "Edge.h"
+
+using namespace std;
 
 namespace MST {
     
@@ -13,7 +19,7 @@ namespace MST {
             int count;
             size_t pSize;
             size_t mSize;
-            vector<vector<int>> matrix;
+            vector<vector<int> > matrix;
             map<string, Node> graph;
         
         private: /// private Functions 

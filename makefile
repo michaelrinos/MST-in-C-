@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Mon Jun 19 17:49:53 2017
+# Created by gmakemake (Ubuntu Jul 25 2014) on Sun Sep 10 03:22:27 2017
 #
 
 #
@@ -42,44 +42,43 @@ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c
 CPP = $(CPP) $(CPPFLAGS)
 ########## Default flags (redefine these with a header.mak file if desired)
-CXXFLAGS =  -std=c++14 -Wall -Wextra -Wpedantic -ggdb
+CXXFLAGS =	-ggdb -std=c++11
 CFLAGS =	-ggdb
 CLIBFLAGS =	-lm
 CCLIBFLAGS =	
 ########## End of default flags
 
 
-CPP_FILES =	Edge.cpp Maze.cpp Node.cpp
+CPP_FILES =	Edge.cpp Maze.cpp MinHeapNode.cpp Minimum_Spanning_Tree.cpp Node.cpp test_edge.cpp test_node.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
-H_FILES =	Edge.h Node.h
+H_FILES =	Edge.h Maze.h MinHeapNode.h Node.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	Node.o Edge.o
+OBJFILES =	Edge.o Maze.o MinHeapNode.o Minimum_Spanning_Tree.o Node.o 
 
 #
 # Main targets
 #
 
-all:	test_edge test_node
-
-MST:	Minimum_Spanning_Tree.o ${OBJFILES}
-	$(CXX) $(CXXFLAGS) -o MST Minimum_Spanning_Tree.o $(OBJFILES) $(CCLIBFLAGS)
+all:	test_edge test_node 
 
 test_edge:	test_edge.o $(OBJFILES)
-	$(CXX) $(CXXFLAGS) -o test_edge test_edge.o $(OBJFILES) $(CCLIBFLAHS)
+	$(CXX) $(CXXFLAGS) -o test_edge test_edge.o $(OBJFILES) $(CCLIBFLAGS)
 
 test_node:	test_node.o $(OBJFILES)
-	$(CXX) $(CXXFLAGS) -o test_node test_node.o $(OBJFILES) $(CCLIBFLAHS)
+	$(CXX) $(CXXFLAGS) -o test_node test_node.o $(OBJFILES) $(CCLIBFLAGS)
 
 #
 # Dependencies
 #
 
-Node.o:		Node.h
-Edge.o:		Edge.h
-
+Edge.o:	Edge.h
+Maze.o:	Maze.h
+MinHeapNode.o:	MinHeapNode.h
+Minimum_Spanning_Tree.o:	Maze.h Node.h
+Node.o:	Node.h
 test_edge.o:	Edge.h
 test_node.o:	Node.h
 
@@ -93,7 +92,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) tester.o core
+	-/bin/rm -f $(OBJFILES) test_edge.o test_node.o core
 
 realclean:        clean
-	-/bin/rm -f tester 
+	-/bin/rm -f test_edge test_node 

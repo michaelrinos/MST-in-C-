@@ -14,6 +14,8 @@ namespace MST {
             int getCol();
             int getWeight();
             friend std::ostream& operator<< (std::ostream& stream, const Edge &e);
+            bool operator>(const Edge & a);
+            bool operator<(const Edge & a);
     };
     
 

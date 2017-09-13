@@ -2,6 +2,7 @@
 #define MST_MIN_HEAP_NODE_H
 
 #include <iostream>
+#include "Node.h"
 
 namespace MST {
     class MinHeapNode{
@@ -9,7 +10,7 @@ namespace MST {
             int key;
             Node node;
         public:
-            MinHeapNode(int key, Node node);
+            MinHeapNode(int key, Node & node);
             ~MinHeapNode();
 
         public: /// getters

@@ -9,13 +9,15 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <stdlib>
+#include <cstdlib>
 #include "Maze.h"
+#include "Edge.h"
 
 using namespace std;
+
 namespace MST{
 
-    Maze::Maze():
+    Maze::Maze(size_t size):
     count(0),
     pSize(),
     mSize()
@@ -25,7 +27,7 @@ namespace MST{
     //Shouldn't need anything else here
     }
 
-    void Maze::generate(Maze & maze, int n, int seed, double value){
+    void Maze::generate(Maze & maze, int n, int seed, double p){
         maze.pSize = n;
         for ( int i = 0; i < n; i++){
             string str = to_string(i);
@@ -42,25 +44,24 @@ namespace MST{
                     if (i == j) continue;
                     double r = (double) rand() / RAND_MAX;
                     if ( r <= p){
-                        int weight = rand % n;
+                        int weight = rand() % n;
                         maze.matrix[i][j] = weight;
                         maze.matrix[j][i] = weight;
                         
                         string str_i = to_string(i);
                         string str_j = to_string(j);
 
-                        Node i = maze.graph.find(str_i).second;
-                        Node j = maze.graph.find(str_j).second;
+                        Node i = maze.graph.find(str_i)->second;
+                        Node j = maze.graph.find(str_j)->second;
 
-                        i.putNeighbor(j);
-                        j.putNeighbor(i);
+                        i.putNeighbor(j, weight);
+                        j.putNeighbor(i, weight);
                     }
                 } 
             }
-            Noze zero = maze.graph.find("0");
+            Node zero = maze.graph.find("0")->second;
             Node invalid("-1");
             zero.setPred(invalid);
-            }
         }
     }
 
@@ -87,10 +88,10 @@ namespace MST{
         for (int i = 0; i < maze.count -1; i++){
             string str = to_string(i);
             Node n = maze.graph.find(str)->second;
-            for (size_t j = 0; j < n.nSize; j++){
-                Node neighbor = n.neighbors[j];
-                if (stoi(neighbor.name) > i){
-                    Edge e(neighbor.weights.find(str)->second , i, stoi(neighbor.name));
+            for (size_t j = 0; j < n.getSize(); j++){
+                Node neighbor = n.getNeighbor(j);
+                if (stoi(neighbor.getName()) > i){
+                    Edge e(neighbor.getWeight(str), i , stoi(neighbor.getName()) );
                 }
             }
         }
@@ -110,7 +111,7 @@ namespace MST{
                 if (maze.matrix[i][j] == 0) continue;
                 else{
                     nodes[i].putNeighbor(nodes[j], maze.matrix[i][j]);
-                    nodes[j].putNeighbor(nodes[i], maze.matrox[i][j]);
+                    nodes[j].putNeighbor(nodes[i], maze.matrix[i][j]);
                 }
             }
         }
@@ -121,7 +122,8 @@ namespace MST{
         vector< Node > nodes;
         for (int i = 0; i < maze.count; i++){
             string str = to_string(i);
-            nodes.push_back(Node t(maze.graph.find(str)));
+
+            nodes.push_back(maze.graph.find(str)->second);
         }
         return nodes;
     }
@@ -134,7 +136,7 @@ namespace MST{
             oss<<" i";
         oss<<"\nPredecessors: \n";
         for ( int i = 0; i < maze.count; i ++){
-            oss<< maze.graph.find(to_string(i))->second.predecessor->name;
+            oss<< maze.graph.find(to_string(i))->second.getPredecessor()->getName();
         }
         oss<<"\n";
         return oss.str();
@@ -144,7 +146,7 @@ namespace MST{
         ostringstream oss{};
         oss<<"The graph as an adjacency list:\n";
         for (int i = 0; i < maze.count; i++){
-            oss<<maze.graph.get(to_string(i))->second;
+            oss<<maze.graph.find(to_string(i))->second;
         }
         oss<<"\n";
         return oss.str();

@@ -12,12 +12,14 @@ using namespace std;
 
 namespace MST{
     
-    MinHeapNode::MinHeapNode(int key, Node node):
+    MinHeapNode::MinHeapNode(int key, Node & node):
         key(key),
-        Node(node)
+        node(node)
     {}
 
-    MinHeapNode::~MinHeapNode
+    MinHeapNode::~MinHeapNode(){
+
+    }
 
     int MinHeapNode::getKey(){
         return key;

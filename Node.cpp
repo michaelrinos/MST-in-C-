@@ -39,9 +39,18 @@ namespace MST{
         //Shouldn't need anything here
     }
 
+
+String & Node::getName(){
+    return this->name;
+}
+
 void Node::putNeighbor(const Node & b, int weight){
     this->neighbors.push_back(b);
     this->weights.insert(pair<string, int>(b.name, weight));
+}
+
+Node & Node::getNeighbor(int loc){
+    return this->neighbors[loc];
 }
 
 void Node::setPred(Node & pred){

@@ -1,8 +1,11 @@
 #include <iostream>
+#include "Edge.h"
 #include "Maze.h"
 #include "Node.h"
 
+using namespace std;
 
+namespace MST {
 
 ///////////////////////////////////////////////////////////////////////////////
 //    _____      _           _        _____ _          __  __
@@ -139,14 +142,65 @@ vector< Edge> kruskal( vector< Edge >){
 ///////////////////////////////////////////////////////////////////////////////
 
 void quickSort(vector< Edge> arr, int low, int high){
+    if (low >= high) return;
+    int middle = low + (high - low) / 2;
+    Edge pivot = arr[middle];
+    int i = low;
+    int j = high;
+    while ( i <= j){
+        while (arr[i] < pivot) i++; 
+        while (arr[j] > pivot) j--; 
+        
+        if ( i <= j ) {
+            Edge temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    if (low < j) quicksort(arr, low, j);
+    if (high > i) quicksort(arr, i, high);
 
 }
 
 void countSort(vector< Edge> a, int k){
+    vector < Edge > copy;
+    vector< int > c;
+    int i;
+
+    for (i = 0; i < k; i++){
+        ++c[ a[i].weight ];
+    }
+
+    for ( i = 1; i < k; i++){
+        c[i] += c[i-1];
+    }
+    
+    for ( i = 0; i < k; i++){
+        copy[c[a[i].weight]-1] = a[i];
+        --(c[a[i].weight]);
+    }
+
+    for ( i = 0; i < k; i++){
+        a[i] = copy[i];
+    }
 
 }
 
-void insertionSord(vector< Edge> arr, int length){
-
-
+void insertionSort(vector< Edge> arr, int length){
+   int i, j;
+   Edge newValue;
+   for (i = 1; i < length; i++){
+        newValue = arr[i];
+        j = i;
+        while ( j > 0 && newValue < arr[j-1] ){
+            arr[j] = arr[j-1];
+            j--;
+        }
+   arr[j] = newValue;
+   }
 }
+
+
+} // namespace 

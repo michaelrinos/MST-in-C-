@@ -34,6 +34,22 @@ class Node{
         /// Destructor
         ~Node();
 
+    public: /// getters
+
+        int getRank();
+
+        bool getMarked();
+
+        size_t getSize();
+
+        string & getName();
+
+        Node * getPredecessor();
+
+        int getWeight(string who);
+        
+        Node & getNeighbor(int loc);
+
     public:  /// Mutation
 
         /// Set a nodes neightbor
