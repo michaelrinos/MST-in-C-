@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Sun Sep 10 03:22:27 2017
+# Created by gmakemake (Ubuntu Jul 25 2014) on Tue Sep 19 18:10:10 2017
 #
 
 #
@@ -42,7 +42,7 @@ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c
 CPP = $(CPP) $(CPPFLAGS)
 ########## Default flags (redefine these with a header.mak file if desired)
-CXXFLAGS =	-ggdb -std=c++11
+CXXFLAGS =	-ggdb
 CFLAGS =	-ggdb
 CLIBFLAGS =	-lm
 CCLIBFLAGS =	
@@ -56,13 +56,16 @@ S_FILES =
 H_FILES =	Edge.h Maze.h MinHeapNode.h Node.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	Edge.o Maze.o MinHeapNode.o Minimum_Spanning_Tree.o Node.o 
+OBJFILES =	Edge.o Maze.o MinHeapNode.o Node.o 
 
 #
 # Main targets
 #
 
-all:	test_edge test_node 
+all:	Minimum_Spanning_Tree test_edge test_node 
+
+Minimum_Spanning_Tree:	Minimum_Spanning_Tree.o $(OBJFILES)
+	$(CXX) $(CXXFLAGS) -o Minimum_Spanning_Tree Minimum_Spanning_Tree.o $(OBJFILES) $(CCLIBFLAGS)
 
 test_edge:	test_edge.o $(OBJFILES)
 	$(CXX) $(CXXFLAGS) -o test_edge test_edge.o $(OBJFILES) $(CCLIBFLAGS)
@@ -75,9 +78,9 @@ test_node:	test_node.o $(OBJFILES)
 #
 
 Edge.o:	Edge.h
-Maze.o:	Maze.h
-MinHeapNode.o:	MinHeapNode.h
-Minimum_Spanning_Tree.o:	Maze.h Node.h
+Maze.o:	Edge.h Maze.h Node.h
+MinHeapNode.o:	MinHeapNode.h Node.h
+Minimum_Spanning_Tree.o:	Edge.h Maze.h MinHeapNode.h Node.h
 Node.o:	Node.h
 test_edge.o:	Edge.h
 test_node.o:	Node.h
@@ -92,7 +95,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) test_edge.o test_node.o core
+	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o test_edge.o test_node.o core
 
 realclean:        clean
-	-/bin/rm -f test_edge test_node 
+	-/bin/rm -f Minimum_Spanning_Tree test_edge test_node 
