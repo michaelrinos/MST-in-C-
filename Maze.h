@@ -23,9 +23,9 @@ namespace MST {
             map<string, Node> graph;
         
         private: /// private Functions 
-            string DFSInfo( Maze &maze);
-            string listInfo( Maze &maze);
-            string matrixInfo( Maze &maze);
+            string DFSInfo();
+            string listInfo();
+            string matrixInfo();
             int canReachDFS(string startNode);
 
         public: /// Creation
@@ -34,10 +34,10 @@ namespace MST {
 
         public: /// Mutation
             void generate(Maze & maze, int nodes, int seed, double value);
-            vector< Edge > getMatrix(Maze &maze);
-            vector< Edge > getList(Maze &maze);
-            vector< Node > getMatrixNodes(Maze &maze);
-            vector< Node > getListNodes(Maze &maze);
+            vector< Edge > getMatrix();
+            vector< Edge > getList();
+            vector< Node > getMatrixNodes();
+            vector< Node > getListNodes();
 
         public: /// Output
             friend ostream &operator<<(ostream &os, const Maze &maze);

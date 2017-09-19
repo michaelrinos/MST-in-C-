@@ -75,4 +75,34 @@ bool Node::operator!=( const Node & other){
     return stoi(this->name) != stoi(other.name);
 }
 
+Node * Node::getPredecessor(){
+    return this->predecessor;
+}
+
+void Node::setRank(int rank){
+    this->rank = rank;
+}
+
+vector<Node> Node::getNeighbors(){
+    return this->neighbors;
+}
+
+int Node::getRank(){
+    return rank;
+}
+
+size_t Node::getSize(){
+    return this->nSize;
+}
+
+int Node::getWeight(string who){
+    return weights.find(who)->second;
+}
+
+bool Node::predSet(){
+    return this->pSet;
+}
+
+
+
 } /// Namespace MST

@@ -206,5 +206,210 @@ void insertionSort(vector< Edge> arr, int length){
    }
 }
 
+void printSorts(vector<Edge> arr,int korp, int morl, int sort, long runTime, int printEdges) {
+    printf("===================================\n");
+    switch (korp){
+        case 1:
+            printf("KRUSKAL WITH ");
+            switch (morl){
+                case 1:
+                    printf("MATRIX USING ");
+                    break;
+                case 2:
+                    printf("LIST USING ");
+                    break;
+            }
+            switch (sort) {
+                case 1:
+                    printf("INSERTION SORT\n");
+                    break;
+                case 2:
+                    printf("COUNT SORT\n");
+                    break;
+                case 3:
+                    printf("QUICKSORT\n");
+                    break;
+            }
+            break;
+        case 2:
+            printf("PRIM WITH ADJACENCY ");
+            switch (morl){
+                case 1:
+                    printf("MATRIX\n");
+                    break;
+                case 2:
+                    printf("LIST\n");
+                    break;
+            }
+            break;
+    }
+    int tWeight = 0;
+    for (int i = 0; i < arr.size()-1; i++){
+        if (&arr[i]){
+            Edge temp = arr[i];
+
+            if (printEdges){
+                cout<<temp<<endl;
+            }
+            tWeight+=temp.getWeight();
+        }
+    }
+    if (!printEdges)
+        printf("\n");
+
+    switch (korp){
+        case 1:
+            printf( "\nTotal weight of MST using Kruskal:  %d\n", tWeight);
+            printf( "Runtime: %lu milliseconds\n\n", runTime);
+            break;
+        case 2:
+            printf( "\nTotal weight of MST using Prim: %d\n", tWeight);
+            printf( "Runtime: %lu milliseconds\n\n", runTime);
+            break;
+	}
+}
+
+void sorter(Maze maze, int korp, int lorm, int sort, int printEdges){
+    time_t startTime;
+    time_t endTime;
+    //Edge lst[numbers];
+    vector<Edge> lst;
+    vector<Edge> MST;
+    vector<Node> temp;
+
+
+    switch (korp) {
+        case 1:
+            switch (lorm) {
+                case 1:
+                    startTime = time(0);
+                    lst = maze.getMatrix();
+                    break;
+                case 2:
+                    startTime = time(0);
+                    lst = maze.getList();
+                    break;
+                default:
+                    lst = maze.getMatrix();
+                    break;
+            }
+
+            switch (sort) {
+                case 1:
+                    insertionSort(lst, lst.size());
+                    break;
+                case 2:
+                    countSort(lst, lst.size());
+                    break;
+                case 3:
+                    quickSort(lst, 0, lst.size());
+                    break;
+            }
+            MST = kruskal(lst);
+            endTime = time(0);
+            break;
+        case 2:
+            switch (lorm){
+                case 1:
+                    startTime = time(0);
+                    temp = maze.getMatrixNodes();
+                    MST = prim(temp);
+                    break;
+                case 2:
+                    startTime = time(0);
+                    temp = maze.getListNodes();
+                    MST = prim(temp);
+					break;
+			}
+        endTime = time(0);
+        break;
+    }
+
+    printSorts(MST, korp, lorm, sort, (endTime-startTime), printEdges);
+}
+
+int main(int argc, const char* argv[]){
+    if( argc !=2){
+        printf("Input file not found \n");
+        exit(EXIT_FAILURE);
+    }
+    const char * filename = argv[1];
+
+    FILE * fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Failed to open file: %s\n", filename);
+        exit(EXIT_FAILURE);
+    }
+    int n, seed;
+    double p;
+
+    fscanf(fp, "%d", &n);                                   //Get n value
+    if (n < 2){                                             //Check n value is valid
+        printf("n must be greater than 1\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fscanf(fp, "%d", &seed);                                //Get seed value
+    if (!seed){
+        printf("failed to retrieve seed value\n");
+        exit(EXIT_FAILURE);
+    }
+    fscanf(fp, "%lf", &p);                                  //Get p value
+    if (p < 0 || p > 1){                                    //Check n value is valid
+        printf("p must be between 0 and 1\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(fp); //be kind rewind
+
+
+    int print=0;
+    if (n < 10)
+        print = 1;
+
+    const time_t startTime = time(0);
+    //Init maze
+    Maze maze(n);
+    maze.generate(maze, n, seed, p);
+    const time_t endTime = time(0);
+
+    if ( print ) {
+        printf("TEST: n= %d, seed=%d, p=%f\n", n, seed, p);
+        printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+        //maze.printMatrix();
+        //maze.printList();
+        //maze.DFSInfo(maze);
+
+        sorter(maze, 1, 1, 1, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
+        sorter(maze, 1, 2, 1, print);
+        sorter(maze, 1, 2, 2, print);
+        sorter(maze, 1, 2, 3, print);
+
+
+        sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 2, 1, print);
+
+    } else {
+        printf("\nTEST: n= %d, seed=%d, p=%f\n", n, seed, p);
+        printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+
+        sorter(maze, 1, 1, 1, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
+        sorter(maze, 1, 2, 1, print);
+        sorter(maze, 1, 2, 2, print);
+        sorter(maze, 1, 2, 3, print);
+
+        sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 2, 1, print);
+
+    }
+
+    return 0;
+}
+
+ 
 
 } // namespace 

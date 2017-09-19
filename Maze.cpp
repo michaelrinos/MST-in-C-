@@ -65,16 +65,16 @@ namespace MST{
         }
     }
 
-    vector < Edge > Maze::getMatrix(Maze & maze){
+    vector < Edge > Maze::getMatrix(){
         vector < Edge > edges;
         int loc = 0;
-        for (int i = 0; i < maze.count; i++){
-            for (int j = 0; j < maze.count; j++){
+        for (int i = 0; i < count; i++){
+            for (int j = 0; j < count; j++){
                 if (i == j) continue;
-                if (maze.matrix[i][j] == 0) continue;
+                if (matrix[i][j] == 0) continue;
                 else {
                     if (j > i){
-                        Edge e(maze.matrix[i][j], i, j);
+                        Edge e(matrix[i][j], i, j);
                         edges.push_back(e);
                     }
                 }
@@ -83,11 +83,11 @@ namespace MST{
         return edges;
     }
 
-    vector < Edge > Maze::getList(Maze & maze){
+    vector < Edge > Maze::getList(){
         vector < Edge > edges;
-        for (int i = 0; i < maze.count -1; i++){
+        for (int i = 0; i < count -1; i++){
             string str = to_string(i);
-            Node n = maze.graph.find(str)->second;
+            Node n = graph.find(str)->second;
             for (size_t j = 0; j < n.getSize(); j++){
                 Node neighbor = n.getNeighbor(j);
                 if (stoi(neighbor.getName()) > i){
@@ -98,70 +98,70 @@ namespace MST{
         return edges;
     }
 
-    vector < Node > Maze::getMatrixNodes(Maze & maze){
+    vector < Node > Maze::getMatrixNodes(){
         vector< Node > nodes;
-        for ( int i = 0; i < maze.count; i++){
+        for ( int i = 0; i < count; i++){
             string str = to_string(i);
             Node n(str);
             nodes.push_back(n);
         }
-        for ( int i = 0; i < maze.count; i++){
-            for ( int j = 0; j < maze.count; j++){
+        for ( int i = 0; i < count; i++){
+            for ( int j = 0; j < count; j++){
                 if (i==j) continue;
-                if (maze.matrix[i][j] == 0) continue;
+                if (matrix[i][j] == 0) continue;
                 else{
-                    nodes[i].putNeighbor(nodes[j], maze.matrix[i][j]);
-                    nodes[j].putNeighbor(nodes[i], maze.matrix[i][j]);
+                    nodes[i].putNeighbor(nodes[j], matrix[i][j]);
+                    nodes[j].putNeighbor(nodes[i], matrix[i][j]);
                 }
             }
         }
         return nodes;
     }
 
-    vector < Node > Maze::getListNodes(Maze & maze){
+    vector < Node > Maze::getListNodes(){
         vector< Node > nodes;
-        for (int i = 0; i < maze.count; i++){
+        for (int i = 0; i < count; i++){
             string str = to_string(i);
 
-            nodes.push_back(maze.graph.find(str)->second);
+            nodes.push_back(graph.find(str)->second);
         }
         return nodes;
     }
 
-    string Maze::DFSInfo(Maze & maze){
+    string Maze::DFSInfo(){
         ostringstream oss{};
         oss<<"Depth-First Search:\n";
         oss<<"Vertices:  \n";
-        for ( int i = 0; i < maze.count; i ++)
+        for ( int i = 0; i < count; i ++)
             oss<<" i";
         oss<<"\nPredecessors: \n";
-        for ( int i = 0; i < maze.count; i ++){
-            oss<< maze.graph.find(to_string(i))->second.getPredecessor()->getName();
+        for ( int i = 0; i < count; i ++){
+            oss<< graph.find(to_string(i))->second.getPredecessor()->getName();
         }
         oss<<"\n";
         return oss.str();
     }
 
-    string Maze::listInfo(Maze & maze){
+    string Maze::listInfo(){
         ostringstream oss{};
         oss<<"The graph as an adjacency list:\n";
-        for (int i = 0; i < maze.count; i++){
-            oss<<maze.graph.find(to_string(i))->second;
+        for (int i = 0; i < count; i++){
+            oss<<graph.find(to_string(i))->second;
         }
         oss<<"\n";
         return oss.str();
     }
 
-    string Maze::matrixInfo(Maze & maze){
+    string Maze::matrixInfo(){
         ostringstream oss{};
         oss<<"The graph as an adjacency matrix:\n\n";
-        for (int i = 0; i < maze.count; i++){
+        for (int i = 0; i < count; i++){
             oss<<" ";
-            for (int j = 0; j < maze.count; j++){
+            for (int j = 0; j < count; j++){
                 if ( j == 0)
-                    oss<<maze.matrix[i][j];
+                    oss<<matrix[i][j];
                 else
-                    oss<<"    "<<maze.matrix[i][j];
+                    oss<<"    "<<matrix[i][j];
             }
             oss<<"\n\n";
         }
