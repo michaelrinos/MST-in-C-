@@ -37,4 +37,11 @@ namespace MST{
         this->node = node;
     }
 
+    /*
+    bool MinHeapNode::operator<(const MinHeapNode & other){
+        return false;
+    }
+    */
+
+
 }

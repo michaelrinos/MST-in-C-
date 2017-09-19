@@ -19,6 +19,9 @@ namespace MST {
         public: /// setters
             void setKey(int key);
             void setNode(Node & node);
+            bool operator<(const MinHeapNode & l) const {
+                return (key < l.key);
+            }
 
 
 

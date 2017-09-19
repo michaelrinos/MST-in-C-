@@ -16,7 +16,7 @@ namespace MST{
     Node::Node( string name ): 
         rank(0),
         marked(false),
-        predSet(false),
+        pSet(false),
         nSize(0),
         nCapacity(0),
         name(name),
@@ -26,7 +26,7 @@ namespace MST{
     Node::Node( const Node & other){
         this->rank = other.rank;
         this->marked = other.marked;
-        this->predSet = other.predSet;
+        this->pSet = other.pSet;
         this->nSize = other.nSize;
         this->nCapacity = other.nCapacity;
         this->name = other.name;
@@ -40,7 +40,7 @@ namespace MST{
     }
 
 
-String & Node::getName(){
+string & Node::getName(){
     return this->name;
 }
 
@@ -71,4 +71,8 @@ bool Node::operator==( const Node & other){
     return stoi(this->name) == stoi(other.name);
 }
     
+bool Node::operator!=( const Node & other){
+    return stoi(this->name) != stoi(other.name);
 }
+
+} /// Namespace MST

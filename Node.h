@@ -15,7 +15,7 @@ class Node{
     private: 
         int rank;
         bool marked;
-        bool predSet;
+        bool pSet;
         size_t nSize;
         size_t nCapacity;
         string name;
@@ -40,6 +40,8 @@ class Node{
 
         bool getMarked();
 
+        bool predSet();
+
         size_t getSize();
 
         string & getName();
@@ -50,6 +52,8 @@ class Node{
         
         Node & getNeighbor(int loc);
 
+        vector<Node> getNeighbors();
+
     public:  /// Mutation
 
         /// Set a nodes neightbor
@@ -57,9 +61,14 @@ class Node{
 
         /// Set a nodes parent
         void setPred(Node & pred);
+
+        /// Set rank
+        void setRank(int rank);
     
     public: /// operators
         bool operator==(const Node & other);
+        bool operator!=(const Node & other);
+        bool operator<(const Node & l);
         /// Prints node and neighbors with weights to get to each neighbor
         friend ostream &operator<<(ostream &os, const Node &n);
 

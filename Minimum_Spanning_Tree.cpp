@@ -1,7 +1,10 @@
 #include <iostream>
+#include <queue>
+#include <limits.h>
 #include "Edge.h"
 #include "Maze.h"
 #include "Node.h"
+#include "MinHeapNode.h"
 
 using namespace std;
 
@@ -17,13 +20,13 @@ namespace MST {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-vector< Edge > prim (vector< vector< Node> a){
+vector< Edge > prim (vector< Node> a){
     vector< Node > parent;
     vector< int > key;
     vector< Edge > MST;
     priority_queue< MinHeapNode > minHeap;
     Node n("-1");
-    for (int i = 0; i < numbers; i++){
+    for (int i = 0; i < a.size(); i++){
         parent[i] = n;
         key[i] = INT_MAX;
         MinHeapNode m(key[i], a[i]);
@@ -34,12 +37,13 @@ vector< Edge > prim (vector< vector< Node> a){
     // Add to MinHeap
     
     while (minHeap.empty() == false){
-        MinHeapNode u = pq.pop();
-        for ( auto n : u.getNode.neighbors){
-            int name = stoi(n.name);
-            int weight = n.weights.find(u.getNode.name);
-            MinHeapNode neighbor(n, key[name]);
-            if ( minHeap.contains(neighbor) && weight < key[name]){
+        MinHeapNode u = minHeap.top();
+        minHeap.pop();
+        for ( auto n : (u.getNode().getNeighbors()) ){
+            int name = stoi(n.getName());
+            int weight = n.getWeight(u.getNode().getName());
+            MinHeapNode neighbor(key[name], n);
+            if ( weight < key[name]){
                 key[name] = weight;
                 parent[name] = u.getNode();
                 MinHeapNode t(weight, n);
@@ -47,9 +51,9 @@ vector< Edge > prim (vector< vector< Node> a){
             }
         }
     }
-    for (int i = 0; i < numbers; i++){
-        string str = stoi(i);
-        Edge e( parent[i].weights.find(str), stor(parent[i].name), i);
+    for (int i = 0; i < a.size(); i++){
+        string str = to_string(i);
+        Edge e( parent[i].getWeight(str), stoi(parent[i].getName()), i);
         MST.push_back(e);
     }
     return MST;
@@ -67,59 +71,59 @@ vector< Edge > prim (vector< vector< Node> a){
 ///////////////////////////////////////////////////////////////////////////////
 
 Node * find(Node p){
-    Node * pp = p.predecessor;
-    if ( p != &pp ){
-        Node * daPred = find(pp);
-        p.setPredecessor(daPred);
+    Node * pp = p.getPredecessor();
+    if ( p != *pp ){
+        Node * daPred = find(*pp);
+        p.setPred(*daPred);
     }
-    return p.predecessor;
+    return p.getPredecessor();
 }
 
 void Union(Node & u, Node & v){
     Node * i = find(u);
     Node * j = find(v);
 
-    if (i->rank > j->rank){
-        j.setPredecessor(i);
+    if (i->getRank() > j->getRank()){
+        j->setPred(*i);
     } else {
-        i.setPredecessor(j);
-        if (i->rank == j->rank){
-            j->rank = j->rank+1;
+        i->setPred(*j);
+        if (i->getRank() == j->getRank()){
+            j->setRank(j->getRank()+1);
         }
     }
 }
 
-vector< Edge> kruskal( vector< Edge >){
+vector< Edge> kruskal( vector< Edge > a){
     vector< Node > b;
-    for (int i = 0; i < numbers; i ++){
+    for (int i = 0; i < a.size(); i ++){
         Node n(to_string(i));
         b[i] = n;
     }
     
     int includedCount = 0;
-    int edge = 0;
+    int edges = 0;
 
     vector< Edge > MST;
     int size = 0;
 
-    while ( includedCount < numbers-1){
-        Node root1 = b[ a[edges].row ];
-        Node root2 = b[ a[edges].col ];
+    while ( includedCount < a.size()-1){
+        Node root1 = b[ a[edges].getRow() ];
+        Node root2 = b[ a[edges].getCol() ];
 
-        if (!root1.predSet){
+        if (!root1.predSet()){
             root1.setPred(root1);
         }
         
-        if (!root2.predSet){
+        if (!root2.predSet()){
             root2.setPred(root2);
         }
 
-        root1 = find(root1);
-        root2 = find(root2);
+        root1 = (*find(root1));
+        root2 = (*find(root2));
        
         if (root1 != root2){
             MST[size++] = a[edges];
-            includeCount++;
+            includedCount++;
             Union(root1,root2);
         }
         edges++;
@@ -159,8 +163,8 @@ void quickSort(vector< Edge> arr, int low, int high){
             j--;
         }
     }
-    if (low < j) quicksort(arr, low, j);
-    if (high > i) quicksort(arr, i, high);
+    if (low < j) quickSort(arr, low, j);
+    if (high > i) quickSort(arr, i, high);
 
 }
 
@@ -170,7 +174,7 @@ void countSort(vector< Edge> a, int k){
     int i;
 
     for (i = 0; i < k; i++){
-        ++c[ a[i].weight ];
+        ++c[ a[i].getWeight() ];
     }
 
     for ( i = 1; i < k; i++){
@@ -178,8 +182,8 @@ void countSort(vector< Edge> a, int k){
     }
     
     for ( i = 0; i < k; i++){
-        copy[c[a[i].weight]-1] = a[i];
-        --(c[a[i].weight]);
+        copy[c[a[i].getWeight()]-1] = a[i];
+        --(c[a[i].getWeight()]);
     }
 
     for ( i = 0; i < k; i++){
@@ -190,7 +194,7 @@ void countSort(vector< Edge> a, int k){
 
 void insertionSort(vector< Edge> arr, int length){
    int i, j;
-   Edge newValue;
+   Edge newValue(0,0,0);
    for (i = 1; i < length; i++){
         newValue = arr[i];
         j = i;
