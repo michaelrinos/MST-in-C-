@@ -42,12 +42,11 @@ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c
 CPP = $(CPP) $(CPPFLAGS)
 ########## Default flags (redefine these with a header.mak file if desired)
-CXXFLAGS =	-ggdb
+CXXFLAGS =	-ggdb -std=c++11 -Wall -Wextra
 CFLAGS =	-ggdb
 CLIBFLAGS =	-lm
 CCLIBFLAGS =	
 ########## End of default flags
-
 
 CPP_FILES =	Edge.cpp Maze.cpp MinHeapNode.cpp Minimum_Spanning_Tree.cpp Node.cpp test_edge.cpp test_node.cpp
 C_FILES =	
@@ -62,16 +61,20 @@ OBJFILES =	Edge.o Maze.o MinHeapNode.o Node.o
 # Main targets
 #
 
-all:	Minimum_Spanning_Tree test_edge test_node 
+all:	Minimum_Spanning_Tree test_edge test_node test_maze
 
 Minimum_Spanning_Tree:	Minimum_Spanning_Tree.o $(OBJFILES)
-	$(CXX) $(CXXFLAGS) -o Minimum_Spanning_Tree Minimum_Spanning_Tree.o $(OBJFILES) $(CCLIBFLAGS)
+	$(CXX) $(CXXFLAGS) -o MST Minimum_Spanning_Tree.o $(OBJFILES) $(CCLIBFLAGS)
 
 test_edge:	test_edge.o $(OBJFILES)
 	$(CXX) $(CXXFLAGS) -o test_edge test_edge.o $(OBJFILES) $(CCLIBFLAGS)
 
 test_node:	test_node.o $(OBJFILES)
 	$(CXX) $(CXXFLAGS) -o test_node test_node.o $(OBJFILES) $(CCLIBFLAGS)
+
+test_maze:	test_maze.o $(OBJFILES)
+	$(CXX) $(CXXFLAGS) -o test_maze test_maze.o $(OBJFILES) $(CCLIBFLAGS)
+
 
 #
 # Dependencies
@@ -84,6 +87,7 @@ Minimum_Spanning_Tree.o:	Edge.h Maze.h MinHeapNode.h Node.h
 Node.o:	Node.h
 test_edge.o:	Edge.h
 test_node.o:	Node.h
+test_maze.o:	Maze.h
 
 #
 # Housekeeping

@@ -40,7 +40,7 @@ namespace MST{
     }
 
 
-string & Node::getName(){
+string & Node::getName() const{
     return this->name;
 }
 

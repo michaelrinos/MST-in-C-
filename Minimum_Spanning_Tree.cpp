@@ -328,6 +328,8 @@ void sorter(Maze maze, int korp, int lorm, int sort, int printEdges){
     printSorts(MST, korp, lorm, sort, (endTime-startTime), printEdges);
 }
 
+} // namespace 
+
 int main(int argc, const char* argv[]){
     if( argc !=2){
         printf("Input file not found \n");
@@ -369,7 +371,7 @@ int main(int argc, const char* argv[]){
 
     const time_t startTime = time(0);
     //Init maze
-    Maze maze(n);
+    MST::Maze maze(n);
     maze.generate(maze, n, seed, p);
     const time_t endTime = time(0);
 
@@ -404,12 +406,6 @@ int main(int argc, const char* argv[]){
 
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
-
     }
-
     return 0;
 }
-
- 
-
-} // namespace 

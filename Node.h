@@ -44,7 +44,7 @@ class Node{
 
         size_t getSize();
 
-        string & getName();
+        string & getName() const;
 
         Node * getPredecessor();
 

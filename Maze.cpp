@@ -21,7 +21,14 @@ namespace MST{
     count(0),
     pSize(),
     mSize()
-    {}
+    {
+        vector< vector <int> > mat(size);
+        for (int i = 0; i < size; i++){
+            mat[i].resize(size);
+        }
+        matrix = mat;
+            
+    }
 
     Maze::~Maze(){
     //Shouldn't need anything else here
@@ -167,5 +174,13 @@ namespace MST{
         }
         return oss.str();
     }
-
+ostream &operator<<(ostream & os, const Maze & maze){
+    os<<maze.matrixInfo();
+    os<<maze.listInfo();
+    os<<maze.DFSInfo();
+    return os;
 }
+
+} /// Namespace
+
+///Friend functions
