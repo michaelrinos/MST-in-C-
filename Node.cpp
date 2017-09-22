@@ -15,7 +15,7 @@ namespace MST{
 
     Node::Node( string name ): 
         rank(0),
-        marked(false),
+        mark(Unknown),
         pSet(false),
         nSize(0),
         nCapacity(0),
@@ -25,7 +25,7 @@ namespace MST{
 
     Node::Node( const Node & other){
         this->rank = other.rank;
-        this->marked = other.marked;
+        this->mark = other.mark;
         this->pSet = other.pSet;
         this->nSize = other.nSize;
         this->nCapacity = other.nCapacity;
@@ -40,8 +40,13 @@ namespace MST{
     }
 
 
-string & Node::getName() const{
-    return this->name;
+const string & Node::getName(){
+    const string t = name;
+    return t;
+}
+
+Node::Marked Node::getMarked(){
+    return mark;
 }
 
 void Node::putNeighbor(const Node & b, int weight){
@@ -55,6 +60,9 @@ Node & Node::getNeighbor(int loc){
 
 void Node::setPred(Node & pred){
     this->predecessor=&pred;
+}
+void Node::setMarked(Marked val){
+    mark = val;
 }
 
 ostream & operator<<(ostream &os, const Node & n){
@@ -75,7 +83,7 @@ bool Node::operator!=( const Node & other){
     return stoi(this->name) != stoi(other.name);
 }
 
-Node * Node::getPredecessor(){
+Node * Node::getPredecessor() const{
     return this->predecessor;
 }
 
@@ -83,7 +91,7 @@ void Node::setRank(int rank){
     this->rank = rank;
 }
 
-vector<Node> Node::getNeighbors(){
+vector<Node> & Node::getNeighbors(){
     return this->neighbors;
 }
 

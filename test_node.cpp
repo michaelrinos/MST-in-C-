@@ -12,6 +12,11 @@ void test1(){
     cout<<b;
     a.putNeighbor(c, 9);
     cout<<a;
+    vector<Node> v = a.getNeighbors();
+    cout<<v.size()<<endl;
+    for (auto a : v){
+        cout<<a<<endl;
+    }
 
 }
 

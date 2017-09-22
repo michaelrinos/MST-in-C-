@@ -11,10 +11,12 @@ using namespace std;
 namespace MST {
 
 class Node{
+    public: 
+        enum Marked { Unknown, Discovered, Visited};
 
     private: 
         int rank;
-        bool marked;
+        Marked mark;
         bool pSet;
         size_t nSize;
         size_t nCapacity;
@@ -38,21 +40,21 @@ class Node{
 
         int getRank();
 
-        bool getMarked();
-
         bool predSet();
 
         size_t getSize();
 
-        string & getName() const;
+        const string & getName();
 
-        Node * getPredecessor();
+        Node * getPredecessor() const;
 
         int getWeight(string who);
+
+        Node::Marked getMarked();
         
         Node & getNeighbor(int loc);
 
-        vector<Node> getNeighbors();
+        vector<Node> & getNeighbors();
 
     public:  /// Mutation
 
@@ -61,6 +63,9 @@ class Node{
 
         /// Set a nodes parent
         void setPred(Node & pred);
+
+        ///
+        void setMarked(Marked value);
 
         /// Set rank
         void setRank(int rank);

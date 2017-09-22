@@ -23,10 +23,10 @@ namespace MST {
             map<string, Node> graph;
         
         private: /// private Functions 
-            string DFSInfo();
-            string listInfo();
-            string matrixInfo();
-            int canReachDFS(string startNode);
+            string DFSInfo() const;
+            string listInfo() const;
+            string matrixInfo() const;
+            void canReachDFS(string startNode);
 
         public: /// Creation
             Maze(size_t size);

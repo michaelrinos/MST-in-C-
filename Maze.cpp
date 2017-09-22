@@ -39,12 +39,13 @@ namespace MST{
         for ( int i = 0; i < n; i++){
             string str = to_string(i);
             Node n(str);
-            maze.graph.insert(pair<string, Node> (str, n));
+            maze.graph.insert(make_pair(str, n));
         }
         
         srand(seed);
 
         while(maze.count != n){
+            cout<<"Maze count: " << maze.count <<endl;
             maze.count = 0;
             for (int i = 0; i < n; i++){
                 for (int j = 0; j < n; j++){
@@ -58,10 +59,13 @@ namespace MST{
                         string str_i = to_string(i);
                         string str_j = to_string(j);
 
+                        //map<string, Node>::iterator it = maze.graph.find(str_i)->second;
                         Node i = maze.graph.find(str_i)->second;
+                        map<string, Node>::iterator it_i = maze.graph.find(str_i);
+                        map<string, Node>::iterator it_j = maze.graph.find(str_j);
                         Node j = maze.graph.find(str_j)->second;
 
-                        i.putNeighbor(j, weight);
+                        it_i->second.putNeighbor(j, weight);
                         j.putNeighbor(i, weight);
                     }
                 } 
@@ -69,7 +73,29 @@ namespace MST{
             Node zero = maze.graph.find("0")->second;
             Node invalid("-1");
             zero.setPred(invalid);
+            canReachDFS("0");
         }
+    }
+
+    void Maze::canReachDFS(string sNode){
+        Node startNode = graph.find(sNode)->second;
+        if (startNode.getMarked() == Node::Unknown){
+            count++;
+        }
+        startNode.setMarked( Node::Discovered );
+        vector<Node> neighbors = startNode.getNeighbors();
+        cout<<startNode.getNeighbors().size()<<endl;
+        for ( auto n : neighbors){
+            if (n.getMarked() == Node::Unknown){
+                cout<<n<<endl;
+                n.setPred(startNode);
+                cout<<n<<endl;
+        cout<<"donde"<<endl;
+                canReachDFS(n.getName());
+            }
+        }
+        startNode.setMarked( Node::Visited);
+
     }
 
     vector < Edge > Maze::getMatrix(){
@@ -135,7 +161,7 @@ namespace MST{
         return nodes;
     }
 
-    string Maze::DFSInfo(){
+    string Maze::DFSInfo() const{
         ostringstream oss{};
         oss<<"Depth-First Search:\n";
         oss<<"Vertices:  \n";
@@ -149,7 +175,7 @@ namespace MST{
         return oss.str();
     }
 
-    string Maze::listInfo(){
+    string Maze::listInfo() const {
         ostringstream oss{};
         oss<<"The graph as an adjacency list:\n";
         for (int i = 0; i < count; i++){
@@ -159,7 +185,7 @@ namespace MST{
         return oss.str();
     }
 
-    string Maze::matrixInfo(){
+    string Maze::matrixInfo() const{
         ostringstream oss{};
         oss<<"The graph as an adjacency matrix:\n\n";
         for (int i = 0; i < count; i++){
