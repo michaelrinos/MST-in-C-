@@ -41,9 +41,6 @@ namespace MST{
             Node * n = new Node(str);
             maze.graph.insert(pair<string, Node *>(str, n));
         }
-        //displayGraph();
-        //return;
-
         
         srand(seed);
 
@@ -51,27 +48,21 @@ namespace MST{
             cout<<"Maze count doesnt match"<<endl;
             maze.count = 0;
             for (int i = 0; i < n; i++){
-                for (int j = 0; j < n; j++){
-                    //cout<<"i: " << i << " j: " << j<<endl;
+                for (int j = i; j < n; j++){
                     if (i == j) continue;
                     double r = (double) rand() / RAND_MAX;
                     if ( r <= p){
                         int weight = rand() % n;
                         maze.matrix[i][j] = weight;
                         maze.matrix[j][i] = weight;
-                        
+
                         string str_i = to_string(i);
                         string str_j = to_string(j);
-
-                        //map<string, Node>::iterator it = maze.graph.find(str_i)->second;
+                        
                         Node * i = maze.graph.find(str_i)->second;
-                        //map<string, Node>::iterator it_i = maze.graph.find(str_i);
-                        //map<string, Node>::iterator it_j = maze.graph.find(str_j);
                         Node * j = maze.graph.find(str_j)->second;
 
-                        //it_i->second.putNeighbor(j, weight);
                         i->putNeighbor(j, weight);
-                        //cout<<"Neighbor size: " <<i->getNeighbors().size()<<endl;
                         j->putNeighbor(i, weight);
                     }
                 } 
@@ -178,6 +169,8 @@ namespace MST{
             oss<<" i";
         oss<<"\nPredecessors: \n";
         for ( int i = 0; i < count-1; i ++){
+            cout<<"Name: " << graph.find(to_string(i))->second->getName()<<endl;
+            cout<<"Pred: " << graph.find(to_string(i))->second->getPredecessor()<<endl;
             oss<< graph.find(to_string(i))->second->getPredecessor()->getName();
         }
         oss<<"\n";
@@ -188,7 +181,7 @@ namespace MST{
         ostringstream oss{};
         oss<<"The graph as an adjacency list:\n";
         for (int i = 0; i < count; i++){
-            oss<<graph.find(to_string(i))->second;
+            oss<<*(graph.find(to_string(i))->second);
         }
         oss<<"\n";
         return oss.str();
@@ -210,6 +203,7 @@ namespace MST{
         return oss.str();
     }
 ostream &operator<<(ostream & os, const Maze & maze){
+    cout<<"Finished"<<endl<<endl;
     os<<maze.matrixInfo();
     os<<maze.listInfo();
     os<<maze.DFSInfo();

@@ -20,7 +20,7 @@ namespace MST{
         nSize(0),
         nCapacity(0),
         name(name),
-        predecessor(NULL)
+        predecessor(0)
         {}
 
     Node::Node( const Node & other){
@@ -70,7 +70,7 @@ ostream & operator<<(ostream &os, const Node & n){
     os << "-> ";
     for ( auto const & val : n.neighbors){
         os << val->name;
-        os << "(" << n.weights.find(val->name)->second << ")";
+        os << "(" << n.weights.find(val->name)->second << ") ";
     }
     return os<<endl;
 }
