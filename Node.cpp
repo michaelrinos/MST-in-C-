@@ -42,19 +42,19 @@ namespace MST{
 
 const string & Node::getName(){
     const string t = name;
-    return t;
+    return name;
 }
 
 Node::Marked Node::getMarked(){
     return mark;
 }
 
-void Node::putNeighbor(const Node & b, int weight){
+void Node::putNeighbor(Node * b, int weight){
     this->neighbors.push_back(b);
-    this->weights.insert(pair<string, int>(b.name, weight));
+    this->weights.insert(pair<string, int>(b->name, weight));
 }
 
-Node & Node::getNeighbor(int loc){
+Node* Node::getNeighbor(int loc){
     return this->neighbors[loc];
 }
 
@@ -69,8 +69,8 @@ ostream & operator<<(ostream &os, const Node & n){
     os << n.name;
     os << "-> ";
     for ( auto const & val : n.neighbors){
-        os << val.name;
-        os << "(" << n.weights.find(val.name)->second << ")";
+        os << val->name;
+        os << "(" << n.weights.find(val->name)->second << ")";
     }
     return os<<endl;
 }
@@ -91,7 +91,7 @@ void Node::setRank(int rank){
     this->rank = rank;
 }
 
-vector<Node> & Node::getNeighbors(){
+vector<Node* > & Node::getNeighbors(){
     return this->neighbors;
 }
 

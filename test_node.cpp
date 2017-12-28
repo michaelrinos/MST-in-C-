@@ -10,9 +10,9 @@ void test1(){
     Node c("5");
     cout<<a;
     cout<<b;
-    a.putNeighbor(c, 9);
+    a.putNeighbor(&c, 9);
     cout<<a;
-    vector<Node> v = a.getNeighbors();
+    vector<Node*> v = a.getNeighbors();
     cout<<v.size()<<endl;
     for (auto a : v){
         cout<<a<<endl;

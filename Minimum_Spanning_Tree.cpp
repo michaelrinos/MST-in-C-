@@ -40,13 +40,13 @@ vector< Edge > prim (vector< Node> a){
         MinHeapNode u = minHeap.top();
         minHeap.pop();
         for ( auto n : (u.getNode().getNeighbors()) ){
-            int name = stoi(n.getName());
-            int weight = n.getWeight(u.getNode().getName());
-            MinHeapNode neighbor(key[name], n);
+            int name = stoi(n->getName());
+            int weight = n->getWeight(u.getNode().getName());
+            MinHeapNode neighbor(key[name], *n);
             if ( weight < key[name]){
                 key[name] = weight;
                 parent[name] = u.getNode();
-                MinHeapNode t(weight, n);
+                MinHeapNode t(weight, *n);
                 //drease the key of the MinHeapNode with the same node
             }
         }
@@ -378,20 +378,21 @@ int main(int argc, const char* argv[]){
     if ( print ) {
         printf("TEST: n= %d, seed=%d, p=%f\n", n, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+        cout<<maze<<endl;
         //maze.printMatrix();
         //maze.printList();
         //maze.DFSInfo(maze);
 
         sorter(maze, 1, 1, 1, print);
-        sorter(maze, 1, 1, 2, print);
-        sorter(maze, 1, 1, 3, print);
-        sorter(maze, 1, 2, 1, print);
-        sorter(maze, 1, 2, 2, print);
-        sorter(maze, 1, 2, 3, print);
+        //sorter(maze, 1, 1, 2, print);
+        //sorter(maze, 1, 1, 3, print);
+        //sorter(maze, 1, 2, 1, print);
+        //sorter(maze, 1, 2, 2, print);
+        //sorter(maze, 1, 2, 3, print);
 
 
-        sorter(maze, 2, 1, 1, print);
-        sorter(maze, 2, 2, 1, print);
+        //sorter(maze, 2, 1, 1, print);
+        //sorter(maze, 2, 2, 1, print);
 
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", n, seed, p);

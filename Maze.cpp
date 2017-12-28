@@ -38,17 +38,21 @@ namespace MST{
         maze.pSize = n;
         for ( int i = 0; i < n; i++){
             string str = to_string(i);
-            Node n(str);
-            maze.graph.insert(make_pair(str, n));
+            Node * n = new Node(str);
+            maze.graph.insert(pair<string, Node *>(str, n));
         }
+        //displayGraph();
+        //return;
+
         
         srand(seed);
 
         while(maze.count != n){
-            cout<<"Maze count: " << maze.count <<endl;
+            cout<<"Maze count doesnt match"<<endl;
             maze.count = 0;
             for (int i = 0; i < n; i++){
                 for (int j = 0; j < n; j++){
+                    //cout<<"i: " << i << " j: " << j<<endl;
                     if (i == j) continue;
                     double r = (double) rand() / RAND_MAX;
                     if ( r <= p){
@@ -60,42 +64,47 @@ namespace MST{
                         string str_j = to_string(j);
 
                         //map<string, Node>::iterator it = maze.graph.find(str_i)->second;
-                        Node i = maze.graph.find(str_i)->second;
-                        map<string, Node>::iterator it_i = maze.graph.find(str_i);
-                        map<string, Node>::iterator it_j = maze.graph.find(str_j);
-                        Node j = maze.graph.find(str_j)->second;
+                        Node * i = maze.graph.find(str_i)->second;
+                        //map<string, Node>::iterator it_i = maze.graph.find(str_i);
+                        //map<string, Node>::iterator it_j = maze.graph.find(str_j);
+                        Node * j = maze.graph.find(str_j)->second;
 
-                        it_i->second.putNeighbor(j, weight);
-                        j.putNeighbor(i, weight);
+                        //it_i->second.putNeighbor(j, weight);
+                        i->putNeighbor(j, weight);
+                        //cout<<"Neighbor size: " <<i->getNeighbors().size()<<endl;
+                        j->putNeighbor(i, weight);
                     }
                 } 
             }
-            Node zero = maze.graph.find("0")->second;
+            Node * zero = maze.graph.find("0")->second;
             Node invalid("-1");
-            zero.setPred(invalid);
+            zero->setPred(invalid);
             canReachDFS("0");
+            //displayGraph();
         }
     }
 
     void Maze::canReachDFS(string sNode){
-        Node startNode = graph.find(sNode)->second;
-        if (startNode.getMarked() == Node::Unknown){
+        Node * startNode = graph.find(sNode)->second;
+        if (startNode->getMarked() == Node::Unknown){
             count++;
         }
-        startNode.setMarked( Node::Discovered );
-        vector<Node> neighbors = startNode.getNeighbors();
-        cout<<startNode.getNeighbors().size()<<endl;
-        for ( auto n : neighbors){
-            if (n.getMarked() == Node::Unknown){
-                cout<<n<<endl;
-                n.setPred(startNode);
-                cout<<n<<endl;
-        cout<<"donde"<<endl;
-                canReachDFS(n.getName());
+        startNode->setMarked( Node::Discovered );
+        vector<Node *> neighbors = startNode->getNeighbors();
+        for ( auto& n : neighbors){
+             if (n->getMarked() == Node::Unknown){
+                n->setPred(*startNode);
+                canReachDFS(n->getName());
             }
         }
-        startNode.setMarked( Node::Visited);
+        startNode->setMarked( Node::Visited);
 
+    }
+
+    void Maze::displayGraph(){
+        for (auto iter = graph.begin(); iter != graph.end(); iter++){
+            cout<< "Key: " << iter->first << "\t Value: "<<*iter->second<<endl;
+        }
     }
 
     vector < Edge > Maze::getMatrix(){
@@ -120,11 +129,11 @@ namespace MST{
         vector < Edge > edges;
         for (int i = 0; i < count -1; i++){
             string str = to_string(i);
-            Node n = graph.find(str)->second;
-            for (size_t j = 0; j < n.getSize(); j++){
-                Node neighbor = n.getNeighbor(j);
-                if (stoi(neighbor.getName()) > i){
-                    Edge e(neighbor.getWeight(str), i , stoi(neighbor.getName()) );
+            Node * n = graph.find(str)->second;
+            for (auto j = 0; j < n->getSize(); j++){
+                Node * neighbor = n->getNeighbor(j);
+                if (stoi(neighbor->getName()) > i){
+                    Edge e(neighbor->getWeight(str), i , stoi(neighbor->getName()) );
                 }
             }
         }
@@ -143,8 +152,8 @@ namespace MST{
                 if (i==j) continue;
                 if (matrix[i][j] == 0) continue;
                 else{
-                    nodes[i].putNeighbor(nodes[j], matrix[i][j]);
-                    nodes[j].putNeighbor(nodes[i], matrix[i][j]);
+                    nodes[i].putNeighbor(&nodes[j], matrix[i][j]);
+                    nodes[j].putNeighbor(&nodes[i], matrix[i][j]);
                 }
             }
         }
@@ -156,7 +165,7 @@ namespace MST{
         for (int i = 0; i < count; i++){
             string str = to_string(i);
 
-            nodes.push_back(graph.find(str)->second);
+            nodes.push_back(*graph.find(str)->second);
         }
         return nodes;
     }
@@ -168,8 +177,8 @@ namespace MST{
         for ( int i = 0; i < count; i ++)
             oss<<" i";
         oss<<"\nPredecessors: \n";
-        for ( int i = 0; i < count; i ++){
-            oss<< graph.find(to_string(i))->second.getPredecessor()->getName();
+        for ( int i = 0; i < count-1; i ++){
+            oss<< graph.find(to_string(i))->second->getPredecessor()->getName();
         }
         oss<<"\n";
         return oss.str();

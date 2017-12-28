@@ -20,7 +20,7 @@ namespace MST {
             size_t pSize;
             size_t mSize;
             vector<vector<int> > matrix;
-            map<string, Node> graph;
+            map<string, Node *> graph;
         
         private: /// private Functions 
             string DFSInfo() const;
@@ -41,6 +41,7 @@ namespace MST {
 
         public: /// Output
             friend ostream &operator<<(ostream &os, const Maze &maze);
+            void displayGraph();
 
     };
 }

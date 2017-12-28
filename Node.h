@@ -23,7 +23,7 @@ class Node{
         string name;
         Node * predecessor;
         map<string, int> weights;
-        vector<Node> neighbors;
+        vector<Node *> neighbors;
 
     public: // Creation
 
@@ -52,14 +52,14 @@ class Node{
 
         Node::Marked getMarked();
         
-        Node & getNeighbor(int loc);
+        Node * getNeighbor(int loc);
 
-        vector<Node> & getNeighbors();
+        vector<Node*> & getNeighbors();
 
     public:  /// Mutation
 
         /// Set a nodes neightbor
-        void putNeighbor(const Node & b, int weight);
+        void putNeighbor(Node * b, int weight);
 
         /// Set a nodes parent
         void setPred(Node & pred);
