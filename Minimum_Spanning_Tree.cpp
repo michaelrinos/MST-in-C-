@@ -26,7 +26,7 @@ vector< Edge > prim (vector< Node> a){
     vector< Edge > MST;
     priority_queue< MinHeapNode > minHeap;
     Node n("-1");
-    for (int i = 0; i < a.size(); i++){
+    for (size_t i = 0; i < a.size(); i++){
         parent[i] = n;
         key[i] = INT_MAX;
         MinHeapNode m(key[i], a[i]);
@@ -51,7 +51,7 @@ vector< Edge > prim (vector< Node> a){
             }
         }
     }
-    for (int i = 0; i < a.size(); i++){
+    for (size_t i = 0; i < a.size(); i++){
         string str = to_string(i);
         Edge e( parent[i].getWeight(str), stoi(parent[i].getName()), i);
         MST.push_back(e);
@@ -70,16 +70,16 @@ vector< Edge > prim (vector< Node> a){
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Node * find(Node p){
-    Node * pp = p.getPredecessor();
+Node * find(Node * p){
+    Node * pp = p->getPredecessor();
     if ( p != *pp ){
-        Node * daPred = find(*pp);
-        p.setPred(*daPred);
+        Node * daPred = find(pp);
+        p->setPred(*daPred);
     }
-    return p.getPredecessor();
+    return p->getPredecessor();
 }
 
-void Union(Node & u, Node & v){
+void Union(Node * u, Node * v){
     Node * i = find(u);
     Node * j = find(v);
 
@@ -94,38 +94,48 @@ void Union(Node & u, Node & v){
 }
 
 vector< Edge> kruskal( vector< Edge > a){
-    vector< Node > b;
-    for (int i = 0; i < a.size(); i ++){
-        Node n(to_string(i));
+    vector< Node* > b(a.size());
+    for (size_t i = 0; i < a.size(); i ++){
+        Node * n = new Node(to_string(i));
         b[i] = n;
     }
     
-    int includedCount = 0;
+    size_t includedCount = 0;
     int edges = 0;
 
     vector< Edge > MST;
-    int size = 0;
 
     while ( includedCount < a.size()-1){
-        Node root1 = b[ a[edges].getRow() ];
-        Node root2 = b[ a[edges].getCol() ];
+        Node * root1 = b[ a[edges].getRow() ];
+        Node * root2 = b[ a[edges].getCol() ];
 
-        if (!root1.predSet()){
-            root1.setPred(root1);
+        if (!root1->predSet()){
+            root1->setPred(*root1);
         }
+    
+        if (!root2->predSet()){
+            root2->setPred(*root2);
+        }
+        cout<<"*****************************************************"<<endl;
+
+        cout<<"Root 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
+        cout<<"Root 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
+        cout<<endl;
+        root1 = find(root1);
+        root2 = find(root2);
         
-        if (!root2.predSet()){
-            root2.setPred(root2);
-        }
-
-        root1 = (*find(root1));
-        root2 = (*find(root2));
+        cout<<"Find 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
+        cout<<"Find 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
        
         if (root1 != root2){
-            MST[size++] = a[edges];
+            MST.push_back(a[edges]);
+            cout<<endl<<"Inserted: " << a[edges]<<endl;
             includedCount++;
             Union(root1,root2);
         }
+        cout<<"Root 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
+        cout<<"Root 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
+        cout<<"*****************************************************"<<endl;
         edges++;
 
     }
@@ -244,12 +254,12 @@ void printSorts(vector<Edge> arr,int korp, int morl, int sort, long runTime, int
             break;
     }
     int tWeight = 0;
-    for (int i = 0; i < arr.size()-1; i++){
+    for (size_t i = 0; i < arr.size()-1; i++){
         if (&arr[i]){
             Edge temp = arr[i];
 
             if (printEdges){
-                cout<<temp<<endl;
+                cout<<temp;
             }
             tWeight+=temp.getWeight();
         }

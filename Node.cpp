@@ -20,7 +20,7 @@ namespace MST{
         nSize(0),
         nCapacity(0),
         name(name),
-        predecessor(0)
+        predecessor(NULL)
         {}
 
     Node::Node( const Node & other){
@@ -41,7 +41,6 @@ namespace MST{
 
 
 const string & Node::getName(){
-    const string t = name;
     return name;
 }
 

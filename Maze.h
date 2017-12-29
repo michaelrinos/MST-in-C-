@@ -38,6 +38,7 @@ namespace MST {
             vector< Edge > getList();
             vector< Node > getMatrixNodes();
             vector< Node > getListNodes();
+            void displayPred() const;
 
         public: /// Output
             friend ostream &operator<<(ostream &os, const Maze &maze);

@@ -15,9 +15,23 @@ void test1(){
     vector<Node*> v = a.getNeighbors();
     cout<<v.size()<<endl;
     for (auto a : v){
-        cout<<a<<endl;
+        cout<<*a<<endl;
     }
 
+    Node d("6");
+    d.setPred(a);
+    cout<<*d.getPredecessor()<<endl;
+
+    Node e(d);
+    cout<<"Original:"<<endl;
+    cout<<d;
+    cout<<"Pred: " << *d.getPredecessor()<<endl;
+    cout<<"Pred name: " << d.getPredecessor()->getName()<<endl;
+
+    cout<<"This is the copy: "<<endl;
+    cout<<e;
+    cout<<"Pred: " << *e.getPredecessor()<<endl;
+    cout<<"Pred name: " << e.getPredecessor()->getName()<<endl;
 }
 
 int main(){
