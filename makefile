@@ -102,4 +102,4 @@ clean:
 	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o test_edge.o test_node.o test_maze.o
 
 realclean:        clean
-	-/bin/rm -f Minimum_Spanning_Tree test_edge test_node 
+	-/bin/rm -f MST test_edge test_node test_maze

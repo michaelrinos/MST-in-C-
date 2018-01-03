@@ -31,22 +31,22 @@ bool Edge::operator>(const Edge & b){
     int result = this->weight - b.weight;
     if ( result == 0){
         if (this->row - b.row == 0)
-            return this->col - b.col;
+            return (this->col - b.col) > 0;
         else 
-            return this->row - b.row;
+            return (this->row - b.row) > 0;
     }
-    return result;
+    return result > 0;
 }
 
 bool Edge::operator<(const Edge & b){
     int result = this->weight - b.weight;
     if ( result == 0){
         if (this->row - b.row == 0)
-            return this->col - b.col;
+            return (this->col - b.col) < 0;
         else 
-            return this->row - b.row;
+            return (this->row - b.row) < 0;
     }
-    return result;
+    return result < 0;
 }
         
 

@@ -72,7 +72,7 @@ vector< Edge > prim (vector< Node> a){
 
 Node * find(Node * p){
     Node * pp = p->getPredecessor();
-    if ( p != *pp ){
+    if ( *p != *pp ){
         Node * daPred = find(pp);
         p->setPred(*daPred);
     }
@@ -93,19 +93,29 @@ void Union(Node * u, Node * v){
     }
 }
 
-vector< Edge> kruskal( vector< Edge > a){
+vector< Edge> kruskal( vector< Edge > a, int total){
     vector< Node* > b(a.size());
     for (size_t i = 0; i < a.size(); i ++){
         Node * n = new Node(to_string(i));
         b[i] = n;
     }
     
-    size_t includedCount = 0;
+    auto includedCount = 0;
     int edges = 0;
 
     vector< Edge > MST;
+    
+    /*
+    for (auto i = 0; i < a.size(); i++){
+        cout<<a[i]<<endl;
+    }
+    */
+    
 
-    while ( includedCount < a.size()-1){
+    while ( includedCount < total - 1){
+        /*cout<<"includecount: " <<includedCount<<"\tedges: " << edges<<"\tsize: "<<a.size()<<endl;
+        cout<<a[edges].getRow()<<endl;
+        cout<<a[edges].getCol()<<endl;*/
         Node * root1 = b[ a[edges].getRow() ];
         Node * root2 = b[ a[edges].getCol() ];
 
@@ -116,26 +126,30 @@ vector< Edge> kruskal( vector< Edge > a){
         if (!root2->predSet()){
             root2->setPred(*root2);
         }
-        cout<<"*****************************************************"<<endl;
+        /*cout<<"*****************************************************"<<endl;
 
         cout<<"Root 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
         cout<<"Root 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
-        cout<<endl;
+        cout<<endl;*/
         root1 = find(root1);
         root2 = find(root2);
         
+        /*
         cout<<"Find 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
         cout<<"Find 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
+        */
        
         if (root1 != root2){
             MST.push_back(a[edges]);
-            cout<<endl<<"Inserted: " << a[edges]<<endl;
+            //cout<<endl<<"Inserted: " << a[edges]<<endl;
             includedCount++;
             Union(root1,root2);
         }
+        /*
         cout<<"Root 1: "<<root1->getName()<<"\tPred1: " << root1->getPredecessor()->getName()<<endl;
         cout<<"Root 2: "<<root2->getName()<<"\tPred2: " << root2->getPredecessor()->getName()<<endl;
         cout<<"*****************************************************"<<endl;
+        */
         edges++;
 
     }
@@ -155,7 +169,7 @@ vector< Edge> kruskal( vector< Edge > a){
 //                                  |___/
 ///////////////////////////////////////////////////////////////////////////////
 
-void quickSort(vector< Edge> arr, int low, int high){
+void quickSort(vector< Edge> &arr, int low, int high){
     if (low >= high) return;
     int middle = low + (high - low) / 2;
     Edge pivot = arr[middle];
@@ -178,9 +192,9 @@ void quickSort(vector< Edge> arr, int low, int high){
 
 }
 
-void countSort(vector< Edge> a, int k){
-    vector < Edge > copy;
-    vector< int > c;
+void countSort(vector< Edge> &a, int k){
+    vector < Edge > copy = a;
+    vector< int > c(k,0);
     int i;
 
     for (i = 0; i < k; i++){
@@ -202,18 +216,18 @@ void countSort(vector< Edge> a, int k){
 
 }
 
-void insertionSort(vector< Edge> arr, int length){
-   int i, j;
-   Edge newValue(0,0,0);
-   for (i = 1; i < length; i++){
+void insertionSort(vector< Edge> &arr){
+    size_t i, j;
+    Edge newValue(0,0,0);
+    for (i = 1; i < arr.size(); i++){
         newValue = arr[i];
         j = i;
         while ( j > 0 && newValue < arr[j-1] ){
             arr[j] = arr[j-1];
             j--;
         }
-   arr[j] = newValue;
-   }
+    arr[j] = newValue;
+    }
 }
 
 void printSorts(vector<Edge> arr,int korp, int morl, int sort, long runTime, int printEdges) {
@@ -254,16 +268,12 @@ void printSorts(vector<Edge> arr,int korp, int morl, int sort, long runTime, int
             break;
     }
     int tWeight = 0;
-    for (size_t i = 0; i < arr.size()-1; i++){
-        if (&arr[i]){
-            Edge temp = arr[i];
 
-            if (printEdges){
-                cout<<temp;
-            }
-            tWeight+=temp.getWeight();
-        }
+    for (auto temp : arr){
+        cout<<temp;
+        tWeight += temp.getWeight();
     }
+
     if (!printEdges)
         printf("\n");
 
@@ -306,7 +316,7 @@ void sorter(Maze maze, int korp, int lorm, int sort, int printEdges){
 
             switch (sort) {
                 case 1:
-                    insertionSort(lst, lst.size());
+                    insertionSort(lst);
                     break;
                 case 2:
                     countSort(lst, lst.size());
@@ -315,7 +325,7 @@ void sorter(Maze maze, int korp, int lorm, int sort, int printEdges){
                     quickSort(lst, 0, lst.size());
                     break;
             }
-            MST = kruskal(lst);
+            MST = kruskal(lst, maze.getCount());
             endTime = time(0);
             break;
         case 2:
@@ -394,14 +404,14 @@ int main(int argc, const char* argv[]){
         //maze.DFSInfo(maze);
 
         sorter(maze, 1, 1, 1, print);
-        //sorter(maze, 1, 1, 2, print);
-        //sorter(maze, 1, 1, 3, print);
-        //sorter(maze, 1, 2, 1, print);
-        //sorter(maze, 1, 2, 2, print);
-        //sorter(maze, 1, 2, 3, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
+        sorter(maze, 1, 2, 1, print);
+        sorter(maze, 1, 2, 2, print);
+        sorter(maze, 1, 2, 3, print);
 
 
-        //sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 1, 1, print);
         //sorter(maze, 2, 2, 1, print);
 
     } else {

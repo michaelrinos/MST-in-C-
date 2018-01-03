@@ -59,6 +59,7 @@ Node* Node::getNeighbor(int loc){
 
 void Node::setPred(Node & pred){
     this->predecessor=&pred;
+    this->pSet = true;
 }
 void Node::setMarked(Marked val){
     mark = val;

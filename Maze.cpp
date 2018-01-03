@@ -98,6 +98,10 @@ namespace MST{
         }
     }
 
+    int Maze::getCount(){
+        return count;
+    }
+
     vector < Edge > Maze::getMatrix(){
         vector < Edge > edges;
         for (int i = 0; i < count; i++){
@@ -120,10 +124,10 @@ namespace MST{
         for (int i = 0; i < count -1; i++){
             string str = to_string(i);
             Node * n = graph.find(str)->second;
-            for (size_t j = 0; j < n->getSize(); j++){
-                Node * neighbor = n->getNeighbor(j);
-                if (stoi(neighbor->getName()) > i){
-                    Edge e(neighbor->getWeight(str), i , stoi(neighbor->getName()) );
+            for (auto neighbor : n->getNeighbors()){
+                if (neighbor->getName() > n->getName()){
+                    Edge e(n->getWeight(neighbor->getName()), stoi(n->getName()), stoi(neighbor->getName()));
+                    edges.push_back(e);
                 }
             }
         }
